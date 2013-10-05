@@ -82,6 +82,13 @@
 		navbarHeight = NAVBAR_HEIGHT;
 	} else {
 		navbarHeight = 0;
+		
+		if ([self navigationController] && [[[self navigationController] navigationBar] isTranslucent]) {
+			navbarHeight += [[[self navigationController] navigationBar] frame].size.height;
+		}
+		if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0f || [[UIApplication sharedApplication] statusBarStyle] == UIStatusBarStyleBlackTranslucent) {
+			navbarHeight += [[UIApplication sharedApplication] statusBarFrame].size.height;
+		}
 	}
     
     contentView = [[UIView alloc] initWithFrame:CGRectMake(0, navbarHeight, self.view.bounds.size.width, self.view.bounds.size.height-navbarHeight)];
@@ -90,6 +97,7 @@
         [contentView addSubview:_backgroundView];
     }
     contentView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+	[[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1]];
     [[self view] addSubview:contentView];
     
 	CGFloat panelWidth = self.view.frame.size.width;
